@@ -8,13 +8,22 @@ class PostsNew extends Component {
     router: PropTypes.object
   }
 
+  onSubmit(props) {
+    this.props.createPost(props)
+      .then(() => { 
+        // blog post created, navigate user to index
+        // by calling this.context.router.push with new path
+        this.context.router.push('/');
+      })
+  }
+
   render() {
     const { fields: { title, categories, content }, handleSubmit } = this.props;
 
     return (
       // handleSubmit is called upon form being submitted.
       // we can pass in an action creator as an argument of handleSubmit
-      <form onSubmit={handleSubmit(this.props.createPost)}>
+      <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
         <h3>Create a New Post</h3>
 
         <div className={`form-group ${title.touched && title.invalid ? 'has-danger' : ''}`}>
